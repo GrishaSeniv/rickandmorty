@@ -1,4 +1,4 @@
-package mate.academy.rickandmortyapp.dto;
+package mate.academy.rickandmortyapp.dto.location;
 
 import lombok.Getter;
 import lombok.Setter;

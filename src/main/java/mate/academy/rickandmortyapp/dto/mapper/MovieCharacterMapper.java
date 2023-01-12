@@ -1,6 +1,6 @@
 package mate.academy.rickandmortyapp.dto.mapper;
 
-import mate.academy.rickandmortyapp.dto.ApiCharacterDto;
+import mate.academy.rickandmortyapp.dto.character.ApiCharacterDto;
 import mate.academy.rickandmortyapp.model.Gender;
 import mate.academy.rickandmortyapp.model.MovieCharacter;
 import mate.academy.rickandmortyapp.model.Status;

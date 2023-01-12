@@ -1,11 +1,4 @@
-package mate.academy.rickandmortyapp.service;
-
-import mate.academy.rickandmortyapp.dto.ApiCharacterDto;
-import mate.academy.rickandmortyapp.dto.ApiResponseDto;
-import mate.academy.rickandmortyapp.dto.mapper.MovieCharacterMapper;
-import mate.academy.rickandmortyapp.model.MovieCharacter;
-import mate.academy.rickandmortyapp.repository.MovieCharacterRepository;
-import org.springframework.stereotype.Service;
+package mate.academy.rickandmortyapp.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +6,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import mate.academy.rickandmortyapp.dto.character.ApiCharacterDto;
+import mate.academy.rickandmortyapp.dto.character.ApiCharacterResponseDto;
+import mate.academy.rickandmortyapp.dto.mapper.MovieCharacterMapper;
+import mate.academy.rickandmortyapp.model.MovieCharacter;
+import mate.academy.rickandmortyapp.repository.MovieCharacterRepository;
+import mate.academy.rickandmortyapp.service.MovieCharacterService;
+import org.springframework.stereotype.Service;
 
 @Service
-public class MovieCharacterServiceImpl implements MovieCharacterService{
+public class MovieCharacterServiceImpl implements MovieCharacterService {
     private final MovieCharacterRepository repository;
     private final HttpClient httpClient;
     private final MovieCharacterMapper mapper;
@@ -28,16 +28,16 @@ public class MovieCharacterServiceImpl implements MovieCharacterService{
 
     @Override
     public void syncExternalCharacters() {
-        ApiResponseDto responseDto = httpClient.get("https://rickandmortyapi.com/api/character",
-                ApiResponseDto.class);
+        ApiCharacterResponseDto responseDto = httpClient.get("https://rickandmortyapi.com/api/character",
+                ApiCharacterResponseDto.class);
         saveDtosToDB(responseDto);
         while (responseDto.getInfo().getNext() != null) {
-            responseDto = httpClient.get(responseDto.getInfo().getNext(), ApiResponseDto.class);
+            responseDto = httpClient.get(responseDto.getInfo().getNext(), ApiCharacterResponseDto.class);
             saveDtosToDB(responseDto);
         }
     }
 
-    private void saveDtosToDB(ApiResponseDto responseDto) {
+    private void saveDtosToDB(ApiCharacterResponseDto responseDto) {
         Map<Long, ApiCharacterDto> externalCharacters = Arrays.stream(responseDto.getResults())
                 .collect(Collectors.toMap(ApiCharacterDto::getId, Function.identity()));
         Set<Long> externalIds = externalCharacters.keySet();

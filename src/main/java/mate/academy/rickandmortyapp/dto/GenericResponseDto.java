@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ApiResponseDto {
+public abstract class GenericResponseDto<T> {
     private ApiInfoDto info;
-    private ApiCharacterDto[] results;
+    private T[] results;
 }

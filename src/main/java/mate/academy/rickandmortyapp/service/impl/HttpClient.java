@@ -1,4 +1,4 @@
-package mate.academy.rickandmortyapp.service;
+package mate.academy.rickandmortyapp.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.CloseableHttpResponse;
