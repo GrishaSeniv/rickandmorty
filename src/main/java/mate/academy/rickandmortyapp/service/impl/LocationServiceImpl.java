@@ -30,7 +30,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public void syncExternalLocations() {
+    public void sync() {
         ApiLocationResponseDto apiLocationResponseDto = httpClient.get(
                 "https://rickandmortyapi.com/api/location", ApiLocationResponseDto.class);
         saveDtosToDB(apiLocationResponseDto);

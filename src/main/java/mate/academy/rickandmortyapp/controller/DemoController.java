@@ -22,13 +22,13 @@ public class DemoController {
 
     @GetMapping("/characters")
     public String runDemo() {
-        movieCharacterService.syncExternalCharacters();
+        movieCharacterService.sync();
         return "Done.";
     }
 
     @GetMapping("/locations")
     public String findAll() {
-        locationService.syncExternalLocations();
+        locationService.sync();
         return "Find all locations done";
     }
 }

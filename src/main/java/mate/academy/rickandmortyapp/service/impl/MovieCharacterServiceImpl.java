@@ -27,7 +27,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
     }
 
     @Override
-    public void syncExternalCharacters() {
+    public void sync() {
         ApiCharacterResponseDto responseDto = httpClient.get("https://rickandmortyapi.com/api/character",
                 ApiCharacterResponseDto.class);
         saveDtosToDB(responseDto);

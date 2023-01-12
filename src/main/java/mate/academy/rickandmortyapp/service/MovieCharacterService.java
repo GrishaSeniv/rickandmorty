@@ -1,5 +1,4 @@
 package mate.academy.rickandmortyapp.service;
 
-public interface MovieCharacterService {
-    void syncExternalCharacters();
+public interface MovieCharacterService extends Syncable {
 }
