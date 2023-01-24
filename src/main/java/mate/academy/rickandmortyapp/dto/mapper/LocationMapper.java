@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import mate.academy.rickandmortyapp.dto.location.ApiLocationDto;
+
+import mate.academy.rickandmortyapp.dto.LocationResponseDto;
+import mate.academy.rickandmortyapp.dto.external.location.ApiLocationDto;
 import mate.academy.rickandmortyapp.model.Location;
 import mate.academy.rickandmortyapp.model.Resident;
 import mate.academy.rickandmortyapp.service.ResidentService;
@@ -30,6 +32,18 @@ public class LocationMapper {
         location.setCreated(apiLocationDto.getCreated());
         location.setResident(residentService.findAllByIdIn(getResidentsIdsByUrls(apiLocationDto)));
         return location;
+    }
+
+    public LocationResponseDto toResponseDto(Location location) {
+        LocationResponseDto locationResponseDto = new LocationResponseDto();
+        locationResponseDto.setId(location.getId());
+        locationResponseDto.setName(location.getName());
+        locationResponseDto.setType(location.getType());
+        locationResponseDto.setDimension(location.getDimension());
+        locationResponseDto.setUrl(location.getUrl());
+        locationResponseDto.setCreated(location.getCreated());
+        locationResponseDto.setResident(location.getResident());
+        return locationResponseDto;
     }
 
     private List<Long> getResidentsIdsByUrls(ApiLocationDto apiLocationDto) {

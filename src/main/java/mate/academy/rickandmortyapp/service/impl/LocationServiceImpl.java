@@ -6,13 +6,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import mate.academy.rickandmortyapp.dto.location.ApiLocationDto;
-import mate.academy.rickandmortyapp.dto.location.ApiLocationResponseDto;
+
+import mate.academy.rickandmortyapp.dto.external.location.ApiLocationDto;
+import mate.academy.rickandmortyapp.dto.external.location.ApiLocationResponseDto;
 import mate.academy.rickandmortyapp.dto.mapper.LocationMapper;
 import mate.academy.rickandmortyapp.model.Location;
 import mate.academy.rickandmortyapp.repository.LocationRepository;
 import mate.academy.rickandmortyapp.repository.ResidentRepository;
 import mate.academy.rickandmortyapp.service.LocationService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +31,7 @@ public class LocationServiceImpl implements LocationService {
         this.residentRepository = residentRepository;
     }
 
+    @Scheduled(cron = "* 0 8 * * ?")
     @Override
     public void sync() {
         ApiLocationResponseDto apiLocationResponseDto = httpClient.get(
@@ -39,6 +42,11 @@ public class LocationServiceImpl implements LocationService {
                     apiLocationResponseDto.getInfo().getNext(), ApiLocationResponseDto.class);
             saveDtosToDB(apiLocationResponseDto);
         }
+    }
+
+    @Override
+    public List<Location> findAll() {
+        return locationRepository.findAll();
     }
 
     private void saveDtosToDB(ApiLocationResponseDto responseDto) {

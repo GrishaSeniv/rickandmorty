@@ -6,12 +6,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import mate.academy.rickandmortyapp.dto.character.ApiCharacterDto;
-import mate.academy.rickandmortyapp.dto.character.ApiCharacterResponseDto;
+import mate.academy.rickandmortyapp.dto.external.character.ApiCharacterDto;
+import mate.academy.rickandmortyapp.dto.external.character.ApiCharacterResponseDto;
 import mate.academy.rickandmortyapp.dto.mapper.MovieCharacterMapper;
 import mate.academy.rickandmortyapp.model.MovieCharacter;
 import mate.academy.rickandmortyapp.repository.MovieCharacterRepository;
 import mate.academy.rickandmortyapp.service.MovieCharacterService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,6 +27,7 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
         this.mapper = mapper;
     }
 
+    @Scheduled(cron = "* 0 8 * * ?")
     @Override
     public void sync() {
         ApiCharacterResponseDto responseDto = httpClient.get("https://rickandmortyapi.com/api/character",
@@ -35,6 +37,18 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
             responseDto = httpClient.get(responseDto.getInfo().getNext(), ApiCharacterResponseDto.class);
             saveDtosToDB(responseDto);
         }
+    }
+
+    @Override
+    public MovieCharacter getRandomCharacter() {
+        long count = repository.count();
+        long randomId = (long) (Math.random() * count);
+        return repository.getById(randomId);
+    }
+
+    @Override
+    public List<MovieCharacter> findAllByNameContains(String name) {
+        return repository.findAllByNameContains(name);
     }
 
     private void saveDtosToDB(ApiCharacterResponseDto responseDto) {
