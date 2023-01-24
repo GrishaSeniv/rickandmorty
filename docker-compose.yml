@@ -5,9 +5,25 @@ services:
     image: postgres:14.1-alpine
     restart: unless-stopped
     env_file: ./.env
+    ports:
+      - $POSTGRES_LOCAL_PORT:$POSTGRES_DOCKER_PORT
     environment:
       - POSTGRES_DB=$POSTGRES_DB
       - POSTGRES_USER=$POSTGRES_USER
       - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+  app:
+    depends_on:
+      - db
+    image: gseniv/rick-and-morty
+    build: .
+    env_file: ./.env
     ports:
-      - "5432:5432"
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+       "spring.datasource.url" : "jdbc:postgresql://db:$POSTGRES_DOCKER_PORT/$POSTGRES_DB",
+       "spring.datasource.username" : "$POSTGRES_USER",
+       "spring.datasource.password" : "$POSTGRES_PASSWORD",
+       "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+       "spring.jpa.hibernate.ddl-auto" : "create"
+    }'
