@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import mate.academy.rickandmortyapp.dto.external.location.ApiLocationDto;
 import mate.academy.rickandmortyapp.dto.external.location.ApiLocationResponseDto;
 import mate.academy.rickandmortyapp.dto.mapper.LocationMapper;
@@ -24,7 +23,9 @@ public class LocationServiceImpl implements LocationService {
     private LocationMapper mapper;
     private ResidentRepository residentRepository;
 
-    public LocationServiceImpl(LocationRepository locationRepository, HttpClient httpClient, LocationMapper mapper, ResidentRepository residentRepository) {
+    public LocationServiceImpl(LocationRepository locationRepository,
+                               HttpClient httpClient, LocationMapper mapper,
+                               ResidentRepository residentRepository) {
         this.locationRepository = locationRepository;
         this.httpClient = httpClient;
         this.mapper = mapper;
@@ -53,7 +54,8 @@ public class LocationServiceImpl implements LocationService {
         Map<Long, ApiLocationDto> externalCharacters = Arrays.stream(responseDto.getResults())
                 .collect(Collectors.toMap(ApiLocationDto::getId, Function.identity()));
         Set<Long> externalIds = externalCharacters.keySet();
-        Map<Long, Location> existingCharacters = locationRepository.findAllByExternalIdIn(externalCharacters.keySet())
+        Map<Long, Location> existingCharacters = locationRepository
+                .findAllByExternalIdIn(externalCharacters.keySet())
                 .stream()
                 .collect(Collectors.toMap(Location::getExternalId, Function.identity()));
         Set<Long> existingIds = existingCharacters.keySet();

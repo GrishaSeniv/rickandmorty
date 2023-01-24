@@ -1,17 +1,17 @@
 package mate.academy.rickandmortyapp.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.stereotype.Component;
-import java.io.IOException;
 
 @Component
 public class HttpClient {
     private final CloseableHttpClient httpClient = HttpClients.createDefault();
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     public HttpClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;

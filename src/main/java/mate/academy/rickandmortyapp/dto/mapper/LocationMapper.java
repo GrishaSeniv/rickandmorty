@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import mate.academy.rickandmortyapp.dto.LocationResponseDto;
 import mate.academy.rickandmortyapp.dto.external.location.ApiLocationDto;
 import mate.academy.rickandmortyapp.model.Location;
@@ -49,15 +48,16 @@ public class LocationMapper {
     private List<Long> getResidentsIdsByUrls(ApiLocationDto apiLocationDto) {
         List<String> residentsUrls = Arrays.stream(apiLocationDto.getResidents())
                 .collect(Collectors.toList());
-        List<Long> residentsDBIds = new ArrayList<>();
+        List<Long> residentsDbIds = new ArrayList<>();
         for (String url : residentsUrls) {
             if (residentService.findByUrl(url).isPresent()) {
-                residentsDBIds.add(residentService.findByUrl(url).get().getId());
+                residentsDbIds.add(residentService.findByUrl(url).get().getId());
             } else {
-                Resident savedResident = residentService.save(residentMapper.parseResidentArray(url));
-                residentsDBIds.add(savedResident.getId());
+                Resident savedResident = residentService
+                        .save(residentMapper.parseResidentArray(url));
+                residentsDbIds.add(savedResident.getId());
             }
         }
-        return residentsDBIds;
+        return residentsDbIds;
     }
 }

@@ -1,9 +1,8 @@
 package mate.academy.rickandmortyapp.service;
 
-import mate.academy.rickandmortyapp.model.Resident;
-
 import java.util.List;
 import java.util.Optional;
+import mate.academy.rickandmortyapp.model.Resident;
 
 public interface ResidentService {
     List<Resident> findAllByIdIn(List<Long> ids);

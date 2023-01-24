@@ -21,7 +21,9 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
     private final HttpClient httpClient;
     private final MovieCharacterMapper mapper;
 
-    public MovieCharacterServiceImpl(MovieCharacterRepository repository, HttpClient httpClient, MovieCharacterMapper mapper) {
+    public MovieCharacterServiceImpl(MovieCharacterRepository repository,
+                                     HttpClient httpClient,
+                                     MovieCharacterMapper mapper) {
         this.repository = repository;
         this.httpClient = httpClient;
         this.mapper = mapper;
@@ -34,7 +36,8 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
                 ApiCharacterResponseDto.class);
         saveDtosToDB(responseDto);
         while (responseDto.getInfo().getNext() != null) {
-            responseDto = httpClient.get(responseDto.getInfo().getNext(), ApiCharacterResponseDto.class);
+            responseDto = httpClient.get(responseDto.getInfo().getNext(),
+                    ApiCharacterResponseDto.class);
             saveDtosToDB(responseDto);
         }
     }
@@ -55,7 +58,8 @@ public class MovieCharacterServiceImpl implements MovieCharacterService {
         Map<Long, ApiCharacterDto> externalCharacters = Arrays.stream(responseDto.getResults())
                 .collect(Collectors.toMap(ApiCharacterDto::getId, Function.identity()));
         Set<Long> externalIds = externalCharacters.keySet();
-        Map<Long, MovieCharacter> existingCharacters = repository.findAllByExternalIdIn(externalCharacters.keySet())
+        Map<Long, MovieCharacter> existingCharacters = repository
+                .findAllByExternalIdIn(externalCharacters.keySet())
                 .stream()
                 .collect(Collectors.toMap(MovieCharacter::getExternalId, Function.identity()));
         Set<Long> existingIds = existingCharacters.keySet();
