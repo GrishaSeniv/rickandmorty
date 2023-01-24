@@ -1,5 +1,6 @@
 package mate.academy.rickandmortyapp.controller;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.rickandmortyapp.dto.LocationResponseDto;
@@ -21,12 +22,14 @@ public class LocationController {
     }
 
     @GetMapping("/parse")
+    @ApiOperation(value = "Parse characters from api to db")
     public String parseFromApi() {
         locationService.sync();
         return "Done";
     }
 
     @GetMapping
+    @ApiOperation(value = "Get all locations")
     public List<LocationResponseDto> findAll() {
         return locationService.findAll()
                 .stream()

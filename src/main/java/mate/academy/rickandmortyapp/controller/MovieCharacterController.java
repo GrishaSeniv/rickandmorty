@@ -1,6 +1,7 @@
 package mate.academy.rickandmortyapp.controller;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.rickandmortyapp.dto.MovieCharacterResponseDto;
@@ -24,19 +25,23 @@ public class MovieCharacterController {
     }
 
     @GetMapping("/parse")
-    @ApiOperation(value = "create a new product")
+    @ApiOperation(value = "Parse characters from api to db")
     public String parseFromApi() {
         movieCharacterService.sync();
         return "Done.";
     }
 
     @GetMapping("/random")
+    @ApiOperation(value = "Get random character")
     public MovieCharacterResponseDto getRandomCharacter() {
         return mapper.toResponseDto(movieCharacterService.getRandomCharacter());
     }
 
     @GetMapping("/by-name")
-    public List<MovieCharacterResponseDto> findAllByName(@RequestParam String name) {
+    @ApiOperation(value = "Get all character by part name")
+    public List<MovieCharacterResponseDto> findAllByName(
+            @RequestParam
+            @ApiParam(value = "Write part name") String name) {
         return movieCharacterService.findAllByNameContains(name)
                 .stream()
                 .map(mapper::toResponseDto)
