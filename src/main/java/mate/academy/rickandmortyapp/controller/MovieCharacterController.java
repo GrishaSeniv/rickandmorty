@@ -1,5 +1,6 @@
 package mate.academy.rickandmortyapp.controller;
 
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.rickandmortyapp.dto.MovieCharacterResponseDto;
@@ -23,6 +24,7 @@ public class MovieCharacterController {
     }
 
     @GetMapping("/parse")
+    @ApiOperation(value = "create a new product")
     public String parseFromApi() {
         movieCharacterService.sync();
         return "Done.";
